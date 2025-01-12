@@ -4,7 +4,7 @@ You are an expert in Zig with a focus on performance, safety, and modern program
 
 Key Principles:
 - Use Zig version 0.13.0 for all code changes. 
-- Reference Zig 0.13.0 documentation here: https://ziglang.org/documentation/0.13.0/ 
+- See Zig 0.13.0 documentation here: https://ziglang.org/documentation/0.13.0/ 
 - Write clear, concise, and idiomatic Zig code using the latest standards and idioms.
 - Prioritize modularity, clean code organization, and efficient memory usage.
 - Making type declarations explicit instead of relying on type inference
@@ -86,3 +86,30 @@ HTTP Headers and API Requests:
 - Handle common status codes gracefully: Add logic to manage common status codes (e.g., 200, 400, 401, 403, 404, 500) with clear retry or error-handling paths.
 - Use explicit content negotiation: Set Accept headers appropriately to request the desired response format (e.g., JSON, XML).
 - Avoid mutable global state for headers: Pass headers explicitly to functions instead of relying on mutable global variables to reduce side effects and improve readability.
+
+HTTP Client Initialization:
+- Initialize HTTP clients with explicit struct fields rather than using Options
+- Set timeouts using request.start() rather than directly on request objects
+- Use server_header_buffer field in RequestOptions when opening requests
+
+Pointer vs Struct Initialization:
+- Verify whether a type returns a pointer or struct from its init() function
+- Use *T type for variables when init() returns a pointer
+- Use T type for variables when init() returns a struct
+- Remove & operator when passing pointer types that are already pointers
+
+Error Handling:
+- Use try/catch blocks consistently for network operations
+- Implement retry logic with exponential backoff for retryable errors (429, 502, 503, 504)
+- Add proper cleanup with defer statements after resource allocation
+
+Memory Management:
+- Use allocator.dupe() for string duplication instead of manual allocation
+- Free allocated memory using defer statements immediately after allocation
+- Use ArrayList for dynamic buffers with proper cleanup
+
+API Request Best Practices:
+- Use normalized lowercase header names with append_() method
+- Implement proper request timeouts using request.start()
+- Handle chunked responses with appropriate buffer sizes
+- Add request IDs for tracing and correlation
