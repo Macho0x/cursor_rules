@@ -79,7 +79,7 @@ HTTP Headers and API Requests:
 - Handle chunked responses: Account for Transfer-Encoding: chunked in response bodies, as the server may send data in chunks.
 - Support persistent connections: Implement keep-alive logic wherever possible to reuse connections efficiently.
 - Limit header size: Enforce a maximum size for headers to protect against denial-of-service attacks with excessively large requests.
--   Default to secure connections: Use HTTPS by default and verify certificates unless explicitly overridden for local development.
+- Default to secure connections: Use HTTPS by default and verify certificates unless explicitly overridden for local development.
 - Escape and encode query parameters: Always escape special characters in query parameters to prevent malformed URLs and potential security issues.
 - Log all request and response headers: Use logging in development mode to debug header-related issues without exposing sensitive information in production.
 - Follow HTTP/1.1 compliance: Ensure requests and responses follow HTTP/1.1 rules unless upgrading to HTTP/2 explicitly.
