@@ -1,53 +1,75 @@
-## C++
-
-You are an expert in C++ with a focus on concurrency, performance, and modern C++ practices.
-
-Key Principles:
-- Write clear, concise, and idiomatic C++ code using modern standards (C++17/20/23).
-- Prioritize modularity, clean code organization, and efficient resource management.
-- Use expressive and descriptive variable names (e.g., isReady, hasData).
-- Adhere to C++ naming conventions: camelCase for variables and functions, PascalCase for classes.
-- Avoid code duplication; leverage templates, namespaces, and classes to encapsulate reusable logic.
-- Ensure memory safety using smart pointers (e.g., std::unique_ptr, std::shared_ptr) and RAII principles.
-- Embrace compile-time optimizations using constexpr, templates, and inline functions where applicable.
-- Log critical events and errors using lightweight and performant logging libraries (e.g., spdlog).
-
-Performance Optimization:
-- Low Latency Design: Prioritize algorithms and data structures that minimize processing time.
-- Use constant-time operations (e.g., hash maps, arrays) over logarithmic alternatives (e.g., balanced trees) when applicable.
-- Optimize hot paths in the code with techniques like loop unrolling and cache alignment.
-- Avoid unnecessary dynamic allocations. Prefer stack memory or pooled memory for frequent operations.
-- Use custom allocators tailored for specific use cases to avoid fragmentation.
-- Use only high-performance, lightweight libraries vetted for real-time systems.
-- Avoid runtime polymorphism where feasible; prefer CRTP (Curiously Recurring Template Pattern) or static polymorphism.
-- Use std::move and std::forward to optimize resource transfers.
-- Leverage compiler optimizations and inlining for hot code paths.
-- Reduce contention in multithreaded programs by using fine-grained locks or lock-free algorithms.
-
-Concurrency and Parallelism:
-
-- Use the C++ Standard Library (std::thread, std::async, std::mutex, std::condition_variable) for threading.
-- Use std::future and std::promise for asynchronous programming and inter-thread communication.
-- Leverage thread pools for efficient task execution, such as those provided by third-party libraries (e.g., ThreadPool from BS::thread_pool).
-- Manage shared state carefully using synchronization primitives (std::mutex, std::lock_guard) to avoid race conditions.
-- Favor lock-free data structures (std::atomic, std::atomic_flag) where safe and appropriate.
-- Use structured concurrency patterns and modern libraries like std::jthread and std::stop_token for managing task lifecycles.
-
-Error Handling and Safety:
-
-- Use try/catch blocks for exception handling; avoid throwing exceptions in performance-critical code paths.
-- Use std::optional or std::expected (from C++23) for safer error handling and optional values.
-- Handle edge cases early and provide clear error messages for debugging.
-
-Logging and Monitoring:
-
-- Integrate structured, lightweight logging for debugging and monitoring (e.g., spdlog or Boost.Log).
-- Log API calls, errors, and performance metrics for diagnostics.
-- Log relevant details about each API request and response, such as HTTP method, URL, status code, and response time.
-- Include unique identifiers (e.g., request IDs) in logs to trace and correlate requests across components.
-
-Async Ecosystem:
-
-- Use networking libraries such as Boost.Asio for async I/O.
-- Leverage serialization libraries like Protobuf or JSON for Modern C++ for data interchange.
-- Employ gRPC with C++ for efficient RPC and async service development.
+{
+  "language": "C++",
+  "context": {
+    "purpose": "Developing a trading application with heavy computations, asynchronous features, and comprehensive logging, inspired by best practices from Rust and Go."
+  },
+  "guidelines": {
+    "general": [
+      "Use modern C++ standards (C++17 or C++20) to leverage features like structured bindings, ranges, coroutines, and concepts.",
+      "Write clear, concise, and idiomatic C++ code with modularity and reuse in mind.",
+      "Prioritize stack allocation over heap allocation for performance-critical paths.",
+      "Encapsulate reusable logic using templates, generic programming, and modular design.",
+      "Ensure memory safety using RAII (Resource Acquisition Is Initialization) and smart pointers (std::unique_ptr, std::shared_ptr).",
+      "Adopt structured logging to capture critical events and performance metrics in JSON format."
+    ],
+    "specific": {
+      "trading": [
+        "Implement low-latency trading systems using optimized data structures (e.g., std::deque for order books or custom containers).",
+        "Leverage fixed-point arithmetic (e.g., Boost.Multiprecision or custom types) to avoid floating-point inaccuracies.",
+        "Ensure deterministic order matching logic with predictable behavior under high load.",
+        "Log trade execution, market data events, and system state changes in structured formats (e.g., JSON)."
+      ],
+      "calculations": [
+        "Use libraries like Eigen or Armadillo for numerical computations with matrix support.",
+        "Optimize loops and transformations using STL algorithms and iterators.",
+        "Profile and eliminate bottlenecks using tools like Intel VTune or perf.",
+        "Ensure numerical precision with appropriate settings for floating-point or fixed-point calculations."
+      ],
+      "async": [
+        "Utilize coroutines (C++20) or libraries like Boost.Asio for asynchronous programming.",
+        "Manage shared state using std::mutex, std::shared_mutex, or std::atomic for thread safety.",
+        "Use thread pools (e.g., Intel TBB, Boost.Thread) for scalable concurrency.",
+        "Implement structured concurrency patterns to ensure proper task lifecycle and cleanup."
+      ],
+      "logging": [
+        "Use a robust JSON logging library, such as nlohmann/json or Boost.Log, for structured and efficient logging.",
+        "Include metadata such as timestamps, log levels, request IDs, and correlation IDs in logs.",
+        "Log critical paths (e.g., trade execution, API requests, and system errors) with adjustable verbosity levels.",
+        "Implement API endpoint logging to capture incoming requests, responses, and error conditions."
+      ],
+      "api_logging": [
+        "Log all incoming API requests, headers, payloads, and response codes.",
+        "Mask sensitive data such as API keys and passwords before logging.",
+        "Track API performance by logging response times, retry counts, and errors.",
+        "Integrate libraries like cpprestsdk or Boost.Beast for RESTful API and WebSocket interactions."
+      ]
+    },
+    "testing": [
+      "Write unit tests for trading algorithms, logging, and asynchronous code.",
+      "Simulate market scenarios to validate trading strategies and execution pipelines.",
+      "Validate JSON log structure and content using schema validation tools.",
+      "Stress-test asynchronous systems to identify deadlocks and contention points."
+    ],
+    "style": [
+      "Follow the Google C++ Style Guide for readability and maintainability.",
+      "Use descriptive variable names like is_ready and has_data for clarity.",
+      "Document all APIs and public interfaces using Doxygen or similar tools."
+    ]
+  },
+  "tooling": {
+    "compiler": "g++ or clang++ with optimization flags (-O2 or -O3) for release builds.",
+    "formatting": "Enable ClangFormat with a style optimized for trading and async systems.",
+    "analysis": [
+      "Enable Clang-Tidy for static code analysis.",
+      "Use tools like AddressSanitizer or Valgrind for detecting memory leaks and race conditions."
+    ],
+    "libraries": [
+      "Boost.Asio or libuv for asynchronous programming.",
+      "nlohmann/json or RapidJSON for JSON parsing and serialization.",
+      "spdlog or Boost.Log for structured logging.",
+      "cpprestsdk or Boost.Beast for API client and server interactions.",
+      "SQLite or LMDB for lightweight data storage.",
+      "Eigen or Armadillo for numerical and matrix calculations."
+    ]
+  }
+}
