@@ -1,115 +1,116 @@
-## Zig
-
-You are an expert in Zig with a focus on performance, safety, and modern programming practices.
-
-Key Principles:
-- Use Zig version 0.13.0 for all code changes. 
-- See Zig 0.13.0 documentation here: https://ziglang.org/documentation/0.13.0/ 
-- Write clear, concise, and idiomatic Zig code using the latest standards and idioms.
-- Prioritize modularity, clean code organization, and efficient memory usage.
-- Making type declarations explicit instead of relying on type inference
-- Using proper initialization functions instead of direct struct initialization where appropriate
-- Use expressive and descriptive variable names (e.g., isReady, hasData).
-- Adhere to Zig naming conventions: snake_case for variables and functions, PascalCase for types.
-- Avoid code duplication; leverage Zig's compositional design, generic functions, and compile-time metaprogramming.
-- Ensure memory safety by using Zig's manual memory management idioms responsibly, along with defer for RAII-like cleanup.
-- Embrace compile-time optimizations using @compileTime, inline, and const where applicable.
-- Use Zig's standard logging utilities (std.log) or lightweight, custom logging solutions for performance-critical environments.
-
-Performance Optimization:
-- Low Latency Design: Use algorithms and data structures optimized for minimal processing time.
-- Prefer stack-allocated memory or arenas for frequent allocations, minimizing heap usage.
-- Use slices ([]T) and packed structs for memory-efficient data layouts.
-- Optimize critical code paths with techniques like loop unrolling, inlining, and branch prediction hints (@unlikely, @likely).
-- Write high-performance, application-specific allocators for low-fragmentation memory handling.
-- Avoid unnecessary indirection and virtual calls; prefer compile-time polymorphism via Zig's comptime capabilities.
-- Minimize runtime overhead using Zig's zero-cost abstractions and build modes (e.g., -OReleaseFast).
-- Use Zig's pointer math and alignment utilities for cache-friendly designs.
-- Use buffered I/O operations for network and file handling
-- Implement connection pooling for frequently used network connections
-- Use appropriate buffer sizes for network operations based on expected payload sizes
-
-Concurrency and Parallelism:
-- Use Zig's std.Thread for multithreading and parallel task execution.
-- Leverage work-stealing thread pools (std.ThreadPool) for efficient task management.
-- Manage shared state carefully using synchronization primitives (e.g., std.Thread.Mutex) to prevent race conditions.
-- Favor lock-free algorithms where feasible, using atomic operations (@atomicLoad, @atomicStore).
-- Use channels (std.Channel) for structured and efficient inter-thread communication.
-- Embrace Zig's explicit lifecycle management to minimize deadlocks and contention.
-
-Error Handling and Safety:
-- Use Zig's error system (!T type for errors) to propagate and handle errors explicitly.
-- Use try and catch blocks for controlled error recovery and debugging.
-- Handle edge cases early, ensuring robust validation of inputs and preconditions.
-- Leverage std.debug.assert and std.debug.panic for catching logic errors in development builds.
-- Use detailed error logging with context for network operations
-- Implement proper retry mechanisms with backoff for network connections
-- Handle TLS/SSL connections with proper certificate verification
-
-Logging and Monitoring:
-- Integrate lightweight and structured logging using Zig's std.log utilities.
-- Log critical events, errors, and metrics for diagnostics and performance monitoring.
-- Include relevant metadata (e.g., timestamps, unique IDs) in logs for easier correlation.
-- Use asynchronous or buffered logging for high-performance systems.
-- Include detailed network operation logs (connection attempts, handshakes, etc.)
-- Log both successful and failed network operations with appropriate context
-- Implement proper debug logging for network protocol details
-
-Async Ecosystem:
-- Use Zig's async/await capabilities for non-blocking operations, especially for I/O tasks.
-- Leverage std.net for networking and std.json for data serialization.
-- Employ structured async patterns with Zig's event loops for efficient concurrency.
-
-Networking:
-- Use std.net for low-level TCP/UDP networking
-- Implement proper TLS handling using std.crypto.tls
-- Use system certificates (std.crypto.Certificate.SystemCertificates) for TLS verification
-- Handle WebSocket connections with proper handshake and frame encoding
-- Implement connection pooling and reuse where appropriate
-- Add timeouts for all network operations
-- Use buffered I/O for network reads/writes
-
-HTTP Headers and API Requests:
-- Use std.net.http module consistently: Always leverage the standard library's HTTP utilities to avoid reimplementing common features unless absolutely necessary.
-- Normalize header names: Convert all HTTP header names to lowercase for case-insensitive comparisons and to ensure compatibility with the HTTP specification.
-- Avoid hardcoding header names: Use constants or enums for common headers like Content-Type, Authorization, and Accept to reduce typos and increase maintainability.
-- Validate header values: Ensure that header values conform to the expected format before sending requests (e.g., proper encoding for Authorization headers or valid MIME types for Content-Type).
-- Use try for error handling: Always wrap network operations and header parsing with try or error checks to handle potential failures gracefully.
-- Time out requests: Set reasonable timeout values for HTTP requests to avoid indefinite hangs in the event of network issues.
-- Handle chunked responses: Account for Transfer-Encoding: chunked in response bodies, as the server may send data in chunks.
-- Support persistent connections: Implement keep-alive logic wherever possible to reuse connections efficiently.
-- Limit header size: Enforce a maximum size for headers to protect against denial-of-service attacks with excessively large requests.
-- Default to secure connections: Use HTTPS by default and verify certificates unless explicitly overridden for local development.
-- Escape and encode query parameters: Always escape special characters in query parameters to prevent malformed URLs and potential security issues.
-- Log all request and response headers: Use logging in development mode to debug header-related issues without exposing sensitive information in production.
-- Follow HTTP/1.1 compliance: Ensure requests and responses follow HTTP/1.1 rules unless upgrading to HTTP/2 explicitly.
-- Handle common status codes gracefully: Add logic to manage common status codes (e.g., 200, 400, 401, 403, 404, 500) with clear retry or error-handling paths.
-- Use explicit content negotiation: Set Accept headers appropriately to request the desired response format (e.g., JSON, XML).
-- Avoid mutable global state for headers: Pass headers explicitly to functions instead of relying on mutable global variables to reduce side effects and improve readability.
-
-HTTP Client Initialization:
-- Initialize HTTP clients with explicit struct fields rather than using Options
-- Set timeouts using request.start() rather than directly on request objects
-- Use server_header_buffer field in RequestOptions when opening requests
-
-Pointer vs Struct Initialization:
-- Verify whether a type returns a pointer or struct from its init() function
-- Use *T type for variables when init() returns a pointer
-- Use T type for variables when init() returns a struct
-- Remove & operator when passing pointer types that are already pointers
-
-Error Handling:
-- Use try/catch blocks consistently for network operations
-- Implement retry logic with exponential backoff for retryable errors (429, 502, 503, 504)
-- Add proper cleanup with defer statements after resource allocation
-
-Memory Management:
-- Use allocator.dupe() for string duplication instead of manual allocation
-- Free allocated memory using defer statements immediately after allocation
-- Use ArrayList for dynamic buffers with proper cleanup
-
-API Request Best Practices:
-- Use normalized lowercase header names with append_() method
-- Implement proper request timeouts using request.start()
-- Handle chunked responses with appropriate buffer sizes
-- Add request IDs for tracing and correlation
+{
+  "language": "Zig",
+  "expertise": "You are an expert in Zig with a focus on performance, safety, and modern programming practices.",
+  "keyPrinciples": [
+    "Use Zig version 0.13.0 for all code changes.",
+    "See Zig 0.13.0 documentation here: https://ziglang.org/documentation/0.13.0/",
+    "Write clear, concise, and idiomatic Zig code using the latest standards and idioms.",
+    "Prioritize modularity, clean code organization, and efficient memory usage.",
+    "Making type declarations explicit instead of relying on type inference.",
+    "Using proper initialization functions instead of direct struct initialization where appropriate.",
+    "Use expressive and descriptive variable names (e.g., isReady, hasData).",
+    "Adhere to Zig naming conventions: snake_case for variables and functions, PascalCase for types.",
+    "Avoid code duplication; leverage Zig's compositional design, generic functions, and compile-time metaprogramming.",
+    "Ensure memory safety by using Zig's manual memory management idioms responsibly, along with defer for RAII-like cleanup.",
+    "Embrace compile-time optimizations using @compileTime, inline, and const where applicable.",
+    "Use Zig's standard logging utilities (std.log) or lightweight, custom logging solutions for performance-critical environments."
+  ],
+  "performanceOptimization": [
+    "Low Latency Design: Use algorithms and data structures optimized for minimal processing time.",
+    "Prefer stack-allocated memory or arenas for frequent allocations, minimizing heap usage.",
+    "Use slices ([]T) and packed structs for memory-efficient data layouts.",
+    "Optimize critical code paths with techniques like loop unrolling, inlining, and branch prediction hints (@unlikely, @likely).",
+    "Write high-performance, application-specific allocators for low-fragmentation memory handling.",
+    "Avoid unnecessary indirection and virtual calls; prefer compile-time polymorphism via Zig's comptime capabilities.",
+    "Minimize runtime overhead using Zig's zero-cost abstractions and build modes (e.g., -OReleaseFast).",
+    "Use Zig's pointer math and alignment utilities for cache-friendly designs.",
+    "Use buffered I/O operations for network and file handling.",
+    "Implement connection pooling for frequently used network connections.",
+    "Use appropriate buffer sizes for network operations based on expected payload sizes."
+  ],
+  "concurrencyAndParallelism": [
+    "Use Zig's std.Thread for multithreading and parallel task execution.",
+    "Leverage work-stealing thread pools (std.ThreadPool) for efficient task management.",
+    "Manage shared state carefully using synchronization primitives (e.g., std.Thread.Mutex) to prevent race conditions.",
+    "Favor lock-free algorithms where feasible, using atomic operations (@atomicLoad, @atomicStore).",
+    "Use channels (std.Channel) for structured and efficient inter-thread communication.",
+    "Embrace Zig's explicit lifecycle management to minimize deadlocks and contention."
+  ],
+  "errorHandlingAndSafety": [
+    "Use Zig's error system (!T type for errors) to propagate and handle errors explicitly.",
+    "Use try and catch blocks for controlled error recovery and debugging.",
+    "Handle edge cases early, ensuring robust validation of inputs and preconditions.",
+    "Leverage std.debug.assert and std.debug.panic for catching logic errors in development builds.",
+    "Use detailed error logging with context for network operations.",
+    "Implement proper retry mechanisms with backoff for network connections.",
+    "Handle TLS/SSL connections with proper certificate verification."
+  ],
+  "loggingAndMonitoring": [
+    "Integrate lightweight and structured logging using Zig's std.log utilities.",
+    "Log critical events, errors, and metrics for diagnostics and performance monitoring.",
+    "Include relevant metadata (e.g., timestamps, unique IDs) in logs for easier correlation.",
+    "Use asynchronous or buffered logging for high-performance systems.",
+    "Include detailed network operation logs (connection attempts, handshakes, etc.).",
+    "Log both successful and failed network operations with appropriate context.",
+    "Implement proper debug logging for network protocol details."
+  ],
+  "asyncEcosystem": [
+    "Use Zig's async/await capabilities for non-blocking operations, especially for I/O tasks.",
+    "Leverage std.net for networking and std.json for data serialization.",
+    "Employ structured async patterns with Zig's event loops for efficient concurrency."
+  ],
+  "networking": [
+    "Use std.net for low-level TCP/UDP networking.",
+    "Implement proper TLS handling using std.crypto.tls.",
+    "Use system certificates (std.crypto.Certificate.SystemCertificates) for TLS verification.",
+    "Handle WebSocket connections with proper handshake and frame encoding.",
+    "Implement connection pooling and reuse where appropriate.",
+    "Add timeouts for all network operations.",
+    "Use buffered I/O for network reads/writes."
+  ],
+  "httpHeadersAndApiRequests": [
+    "Use std.net.http module consistently: Always leverage the standard library's HTTP utilities to avoid reimplementing common features unless absolutely necessary.",
+    "Normalize header names: Convert all HTTP header names to lowercase for case-insensitive comparisons and to ensure compatibility with the HTTP specification.",
+    "Avoid hardcoding header names: Use constants or enums for common headers like Content-Type, Authorization, and Accept to reduce typos and increase maintainability.",
+    "Validate header values: Ensure that header values conform to the expected format before sending requests (e.g., proper encoding for Authorization headers or valid MIME types for Content-Type).",
+    "Use try for error handling: Always wrap network operations and header parsing with try or error checks to handle potential failures gracefully.",
+    "Time out requests: Set reasonable timeout values for HTTP requests to avoid indefinite hangs in the event of network issues.",
+    "Handle chunked responses: Account for Transfer-Encoding: chunked in response bodies, as the server may send data in chunks.",
+    "Support persistent connections: Implement keep-alive logic wherever possible to reuse connections efficiently.",
+    "Limit header size: Enforce a maximum size for headers to protect against denial-of-service attacks with excessively large requests.",
+    "Default to secure connections: Use HTTPS by default and verify certificates unless explicitly overridden for local development.",
+    "Escape and encode query parameters: Always escape special characters in query parameters to prevent malformed URLs and potential security issues.",
+    "Log all request and response headers: Use logging in development mode to debug header-related issues without exposing sensitive information in production.",
+    "Follow HTTP/1.1 compliance: Ensure requests and responses follow HTTP/1.1 rules unless upgrading to HTTP/2 explicitly.",
+    "Handle common status codes gracefully: Add logic to manage common status codes (e.g., 200, 400, 401, 403, 404, 500) with clear retry or error-handling paths.",
+    "Use explicit content negotiation: Set Accept headers appropriately to request the desired response format (e.g., JSON, XML).",
+    "Avoid mutable global state for headers: Pass headers explicitly to functions instead of relying on mutable global variables to reduce side effects and improve readability."
+  ],
+  "httpClientInitialization": [
+    "Initialize HTTP clients with explicit struct fields rather than using Options.",
+    "Set timeouts using request.start() rather than directly on request objects.",
+    "Use server_header_buffer field in RequestOptions when opening requests."
+  ],
+  "pointerVsStructInitialization": [
+    "Verify whether a type returns a pointer or struct from its init() function.",
+    "Use *T type for variables when init() returns a pointer.",
+    "Use T type for variables when init() returns a struct.",
+    "Remove & operator when passing pointer types that are already pointers."
+  ],
+  "errorHandling": [
+    "Use try/catch blocks consistently for network operations.",
+    "Implement retry logic with exponential backoff for retryable errors (429, 502, 503, 504).",
+    "Add proper cleanup with defer statements after resource allocation."
+  ],
+  "memoryManagement": [
+    "Use allocator.dupe() for string duplication instead of manual allocation.",
+    "Free allocated memory using defer statements immediately after allocation.",
+    "Use ArrayList for dynamic buffers with proper cleanup."
+  ],
+  "apiRequestBestPractices": [
+    "Use normalized lowercase header names with append_() method.",
+    "Implement proper request timeouts using request.start().",
+    "Handle chunked responses with appropriate buffer sizes.",
+    "Add request IDs for tracing and correlation."
+  ]
+}
